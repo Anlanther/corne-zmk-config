@@ -2,10 +2,35 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
+    - name: cormoran
+      url-base: https://github.com/cormoran
   projects:
+    # The Eyelash Peripherals Corne shield. This upstream repo is used as a
+    # module: it supplies the `eyelash_corne_left` / `eyelash_corne_right`
+    # shields (matrix, encoder, RGB, backlight, nice!view).
+    - name: eyelash_corne
+      url: https://github.com/a741725193/zmk-new_corne
+      revision: main
+    # ZMK fork with DYA Studio support, as required by the shield above.
     - name: zmk
-      remote: zmkfirmware
-      revision: v0.3
+      remote: cormoran
+      revision: v0.3-branch+dya
       import: app/west.yml
+    # Required by the shield's keymap (runtime sensor rotate for the encoder).
+    - name: zmk-behavior-runtime-sensor-rotate
+      remote: cormoran
+      revision: main
+    - name: zmk-module-ble-management
+      remote: cormoran
+      revision: zmk-v0.3.0.0
+    - name: zmk-module-battery-history
+      remote: cormoran
+      revision: main
+    - name: zmk-module-settings-rpc
+      remote: cormoran
+      revision: main
+    - name: zmk-module-runtime-input-processor
+      remote: cormoran
+      revision: zmk-v0.3.0.0
   self:
     path: config
