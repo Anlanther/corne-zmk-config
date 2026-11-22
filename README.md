@@ -40,7 +40,7 @@ flowchart TB
         s5["DOWN"]
     end
     subgraph R["Right half"]
-        r1["Y"] --- r2["U"] --- r3["I"] --- r4["O"] --- r5["P"] --- r6["BSPC"]
+        r1["Y"] --- r2["U"] --- r3["I"] --- r4["O"] --- r5["P"] --- r6["\\"]
         r7["H"] --- r8["J<br/>Cmd"] --- r9["K<br/>Alt"] --- r10["L<br/>Ctrl"] --- r11["SEMI<br/>Shift"] --- r12["SQT"]
         r13["N"] --- r14["M"] --- r15[","] --- r16["."] --- r17["/"] --- r18["ESC"]
     end
