@@ -70,17 +70,31 @@ LEFT - (none) - RIGHT
 
 ### Layer 2 — Number
 
-Held from the left `ESC` thumb or the right `CAPS` thumb.
+Held from the left `ESC` thumb or the right `CAPS` thumb. The left half's top row
+(`Q W E R T` positions) selects Bluetooth profile P1–P5.
 
 ```text
 LEFT HALF                                                            RIGHT HALF
 +----------+----------+----------+----------+----------+----------++----------+----------+----------+----------+----------+----------+
-| -        | -        | -        | -        | -        | -        || 7        | 8        | 9        | -        | -        | -        |
+| USB      | P1       | P2       | P3       | P4       | P5       || 7        | 8        | 9        | -        | -        | -        |
 +----------+----------+----------+----------+----------+----------++----------+----------+----------+----------+----------+----------+
-| -        | -        | -        | -        | -        | -        || 4        | 5        | 6        | -        | -        | -        |
+| OBL      | -        | -        | -        | -        | -        || 4        | 5        | 6        | -        | -        | -        |
 +----------+----------+----------+----------+----------+----------++----------+----------+----------+----------+----------+----------+
-| -        | -        | -        | -        | -        | -        || 0        | 1        | 2        | 3        | -        | -        |
+| BTC      | -        | -        | -        | -        | -        || 0        | 1        | 2        | 3        | -        | -        |
 +----------+----------+----------+----------+----------+----------++----------+----------+----------+----------+----------+----------+
+
+All three Bluetooth/output keys are on the **left half only**, at the position of
+the Base-layer key shown in brackets:
+
+| Key   | Base key | Binding          | What it does                                                              |
+| ----- | -------- | ---------------- | ------------------------------------------------------------------------- |
+| `USB` | `TAB`    | `&out OUT_USB`   | Latch output to USB. BLE stops advertising while wired.                   |
+| `OBL` | `GRAVE`  | `&out OUT_BLE`   | Latch output to Bluetooth. Use after unplugging so output isn't stuck.    |
+| `P1`–`P5` | `Q`–`T` | `&bt BT_SEL 0`–`4` | Select Bluetooth profile 1–5. Profile 1 is the default bond slot.    |
+| `BTC` | `LSHFT`  | `&bt BT_CLR`     | Clear the bond of the **currently selected** profile (hold briefly).      |
+
+> `BTC` acts on whichever profile is active — press `P1`–`P5` first, then `BTC`.
+> A full board-wide re-pair still needs the `settings_reset` artifact.
 
 THUMB STICK
           UP
@@ -116,4 +130,7 @@ To flash: connect USB, double-tap **reset** within 0.5 s, then drag the
 - Encoder direction is set in `config/eyelash_corne.keymap` (`rsr_vol`);
   swap `cw-binding` / `ccw-binding` if volume moves the wrong way.
 - Hold `Q + S + Z` for 2 s to soft off.
+- Bluetooth and output switching live on the Number layer, left half: `USB`
+  (USB output), `OBL` (Bluetooth output), `P1`–`P5` (profile select), `BTC`
+  (clear current profile's bond). See the Layer 2 legend.
 - Settings (RGB, backlight, sleep, NKRO, debounce) live in `config/eyelash_corne.conf`.
