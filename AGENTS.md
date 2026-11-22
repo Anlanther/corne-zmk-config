@@ -126,6 +126,9 @@ Firmware is built by GitHub Actions on push. Artifacts:
 | `eyelash_corne_studio_left` | left half (central, Studio enabled) |
 | `settings_reset`            | either half, only to re-pair        |
 
+Artifact names come from `build.yaml` (`artifact-name:`); a target that omits it
+falls back to `<shield>-<board>-zmk` and produces e.g. `…nice_view-nice_nano_v2-zmk.uf2`.
+
 Keymap-only changes need **only the left half** re-flashed (zephyr settings do not
 carry the keymap; the keymap is compiled into each image, so flash both if both
 changed — see `reference-docs/build-and-flash.md`).

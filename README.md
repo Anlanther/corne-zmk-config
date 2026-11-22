@@ -35,7 +35,7 @@ LEFT HALF                                            RIGHT HALF
 | GRAVE | A     | S     | D     | F     | G     || H     | J     | K     | L     | SEMI  | SQT   |
 |       | Shift | Ctrl  | Alt   | Cmd   |       ||       | Cmd   | Alt   | Ctrl  | Shift |       |
 +-------+-------+-------+-------+-------+-------++-------+-------+-------+-------+-------+-------+
-| Shift | Z     | X     | C     | V     | B     || N     | M     | ,     | .     | /     | ESC   |
+| Shift | Z     | X     | C     | V     | B     || N     | M     | ,     | .     | /     | SHIFT |
 +-------+-------+-------+-------+-------+-------++-------+-------+-------+-------+-------+-------+
 
 THUMB KEYS
@@ -76,9 +76,9 @@ Held from the left `ESC` thumb or the right `CAPS` thumb. The left half's top ro
 ```text
 LEFT HALF                                                            RIGHT HALF
 +----------+----------+----------+----------+----------+----------++----------+----------+----------+----------+----------+----------+
-| USB      | P1       | P2       | P3       | P4       | P5       || 7        | 8        | 9        | -        | -        | -        |
+| USB      | P1       | P2       | P3       | P4       | P5       || -        | 7        | 8        | 9        | -        | -        |
 +----------+----------+----------+----------+----------+----------++----------+----------+----------+----------+----------+----------+
-| OBL      | -        | -        | -        | -        | -        || 4        | 5        | 6        | -        | -        | -        |
+| OBL      | -        | -        | -        | -        | -        || -        | 4        | 5        | 6        | -        | -        |
 +----------+----------+----------+----------+----------+----------++----------+----------+----------+----------+----------+----------+
 | BTC      | -        | -        | -        | -        | -        || 0        | 1        | 2        | 3        | -        | -        |
 +----------+----------+----------+----------+----------+----------++----------+----------+----------+----------+----------+----------+
@@ -115,11 +115,11 @@ On the **left half**. Rotating it sends volume keys on every layer.
 
 Pushes trigger GitHub Actions; download artifacts from the **Actions** tab.
 
-| Artifact                    | Flash to                                    |
-| --------------------------- | ------------------------------------------- |
-| `eyelash_corne_right`       | right half                                  |
-| `eyelash_corne_studio_left` | left half (central, enables ZMK Studio)     |
-| `settings_reset`            | either half, only to re-pair the two halves |
+| Firmware                        | Flash to                                    |
+| ------------------------------- | ------------------------------------------- |
+| `eyelash_corne_right.uf2`       | right half                                  |
+| `eyelash_corne_studio_left.uf2` | left half (central, enables ZMK Studio)     |
+| `settings_reset.uf2`            | either half, only to re-pair the two halves |
 
 To flash: connect USB, double-tap **reset** within 0.5 s, then drag the
 `.uf2` onto the mounted drive. Do not delete anything on the drive.
