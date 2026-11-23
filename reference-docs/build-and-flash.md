@@ -66,13 +66,7 @@ The build produces one `.uf2` per target. Match by **shield name + side**:
 | `…central_dongle…uf2`          | USB receiver                                                                |
 | `settings_reset…uf2`           | either half (clears pairing) — flash both halves, and the dongle if present |
 
-Examples seen in the shipped bundles: `eyelash_corne_studio_left.uf2`, `eyelash_corne_right nice_view-nice_nano_v2-zmk.uf2`, `eyeslash_corne_central_dongle_oled.uf2`. A full mapping of the shipped files is in [../docs/firmware-index.md](../docs/firmware-index.md).
-
-The long `…-nice_nano_v2-zmk.uf2` style is ZMK's default: the reusable workflow
-sets `artifact_name` to `${shield}-${board}-zmk` when the build target has no
-`artifact-name:` key. Add one to each entry in `build.yaml` to control it.
-Note that `artifact-name` only renames the file — the uploaded artifact bundle
-is still `artifact-<artifact-name>` inside the merged `firmware` archive.
+Examples seen in the shipped bundles: `eyelash_corne_studio_left.uf2`, `eyelash_corne_right nice_view-nice_nano_v2-zmk.uf2`, `eyeslash_corne_central_dongle_oled.uf2`. Always confirm the exact artifact names against your repo's `build.yaml`.
 
 ## Flashing procedure (both halves)
 

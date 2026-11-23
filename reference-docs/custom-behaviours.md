@@ -21,13 +21,13 @@ Top-left alpha key. Defined as:
 
 Behaviour on the default layer (layer 0):
 
-| Gesture | Output |
-| --- | --- |
-| tap | `LSHIFT` |
-| hold | `LSHIFT` |
+| Gesture    | Output     |
+| ---------- | ---------- |
+| tap        | `LSHIFT`   |
+| hold       | `LSHIFT`   |
 | double-tap | `CAPSLOCK` |
 
-How it works: `tap-dance` sequences are the ordered list in `bindings`. Tap-dance with a hold-capable first entry passes through the first binding on each tap. To add more taps, add more `&kp …` entries to `bindings`. To make a *different* key do this, copy the `td0` node as `td1` and reference `&td1` in the keymap — `#binding-cells` stays `<0>` because the key takes no parameter.
+How it works: `tap-dance` sequences are the ordered list in `bindings`. Tap-dance with a hold-capable first entry passes through the first binding on each tap. To add more taps, add more `&kp …` entries to `bindings`. To make a _different_ key do this, copy the `td0` node as `td1` and reference `&td1` in the keymap — `#binding-cells` stays `<0>` because the key takes no parameter.
 
 > Tap-dance adds a small timing delay to single taps (it waits for the tap window). If a key feels laggy, that's why — prefer `&mt`/`&lt` for shifted keys unless you actually need multi-tap.
 
@@ -40,18 +40,18 @@ How it works: `tap-dance` sequences are the ordered list in `bindings`. Tap-danc
 
 `&lt <layer> <key>` is ZMK's `hold-tap` layer behaviour. The firmware configures a "balanced" flavour; the relevant knobs (in `corne.dtsi`/`corne_left.dts` under a `behaviors` node with `compatible = "zmk,behavior-hold-tap"`) are:
 
-| Property | Effect |
-| --- | --- |
-| `tapping-term-ms` | how long a hold must last to count as a hold |
-| `quick-tap-ms` | re-tap within this window always sends the tap key |
+| Property                | Effect                                                                                                     |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `tapping-term-ms`       | how long a hold must last to count as a hold                                                               |
+| `quick-tap-ms`          | re-tap within this window always sends the tap key                                                         |
 | `require-prior-idle-ms` | only treat as hold if the keyboard was idle this long (reduces accidental layer changes while typing fast) |
-| `flavor` | `balanced`, `tap-preferred`, `hold-preferred`, `tap-unless-interrupted` |
+| `flavor`                | `balanced`, `tap-preferred`, `hold-preferred`, `tap-unless-interrupted`                                    |
 
 If you experience "space became layer 3 mid-word", lengthen `require-prior-idle-ms` or switch to `tap-preferred`.
 
 ## Rotary encoder
 
-The encoder is a *sensor*; its action per layer is set by the layer's `sensor-bindings`:
+The encoder is a _sensor_; its action per layer is set by the layer's `sensor-bindings`:
 
 ```dts
 sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;   // layer 0: volume
@@ -59,14 +59,14 @@ sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;   // layer 0: volume
 
 Typical layer-specific variants used by the shipped keymap:
 
-| Layer | Sensor binding | Effect |
-| --- | --- | --- |
-| 0 | `&inc_dec_kp C_VOL_UP C_VOL_DN` | volume |
-| 1–3 | `&msc SCRL_UP SCRL_DOWN` | mouse-wheel scroll |
+| Layer | Sensor binding                  | Effect             |
+| ----- | ------------------------------- | ------------------ |
+| 0     | `&inc_dec_kp C_VOL_UP C_VOL_DN` | volume             |
+| 1–3   | `&msc SCRL_UP SCRL_DOWN`        | mouse-wheel scroll |
 
-Encoder *press* is a normal matrix key (left thumb area), currently mapped to `SPACE` (`&kp SPACE`) on layer 0.
+Encoder _press_ is a normal matrix key (left thumb area), currently mapped to `SPACE` (`&kp SPACE`) on layer 0.
 
-When re-keying the encoder in DYA STUDIO, the delay field must be ≥ 50 ms or the change is rejected ([DYA STUDIO guide](../docs/dya-studio-tutorial.md)).
+When re-keying the encoder in DYA STUDIO, the delay field must be ≥ 50 ms or the change is rejected (see [End-user behaviour reference → DYA STUDIO](user-reference.md#dya-studio-real-time-re-keying)).
 
 ## Mouse / joystick layer
 
