@@ -22,7 +22,8 @@ built on nice!nano v2 with a nice!view display on each half.
 per side; the stick sits between the halves in the upper-middle.
 
 Legend: `key` = tap, `key / hold` where a key has two functions.
-`-` = transparent placeholder (inherits from the layer below),
+Blank cells are transparent placeholders (inherit from the layer below);
+`-` is shown only where the key sends a minus,
 `(none)` = no binding at all.
 
 ### Layer 0 — Base
@@ -55,11 +56,11 @@ Held from the left `ENT` thumb or the right `SPC` thumb.
 ```text
 LEFT HALF                                                             RIGHT HALF
 +----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+----------+
-| -        | -        | -        | TAB      | -        | -        || (                    | )        | UP       | [        | ]        | -                    | -        |
+|          |          |          | TAB      |          |          || (                    | )        | UP       | [        | ]        |                      | -        |
 +----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+----------+
-| -        | -        | -        | -        | -        | -        || =                    | LEFT     | DOWN     | RIGHT    | -        | -                    | -        |
+|          |          |          |          |          |          || =                    | LEFT     | DOWN     | RIGHT    |          |                      |          |
 +----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+----------+
-| F2       | Ctrl+Up  | F3       | Prev     | Play     | Next     || Cmd+Ctrl+Shift+4     | -        | -        | -        | -        | Cmd+Shift+5          | Cmd+Shift+4 |
+| F2       | Ctrl+Up  | F3       | Prev     | Play     | Next     || Cmd+Ctrl+Shift+4     |          |          |          |          | Cmd+Shift+5          | Cmd+Shift+4 |
 +----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+----------+
 
 THUMB STICK
@@ -76,11 +77,11 @@ Held from the left `ESC` thumb or the right `CAPS` thumb. The left half's top ro
 ```text
 LEFT HALF                                                            RIGHT HALF
 +----------+----------+----------+----------+----------+----------++----------+----------+----------+----------+----------+----------+
-| USB      | P1       | P2       | P3       | P4       | P5       || -        | 7        | 8        | 9        | -        | -        |
+| USB      | P1       | P2       | P3       | P4       | P5       ||          | 7        | 8        | 9        |          |          |
 +----------+----------+----------+----------+----------+----------++----------+----------+----------+----------+----------+----------+
-| OBL      | -        | -        | -        | -        | -        || -        | 4        | 5        | 6        | -        | -        |
+| OBL      |          |          |          |          |          ||          | 4        | 5        | 6        |          |          |
 +----------+----------+----------+----------+----------+----------++----------+----------+----------+----------+----------+----------+
-| BTC      | -        | -        | -        | -        | -        || 0        | 1        | 2        | 3        | -        | -        |
+| BTC      |          |          |          |          |          || 0        | 1        | 2        | 3        |          |          |
 +----------+----------+----------+----------+----------+----------++----------+----------+----------+----------+----------+----------+
 
 All three Bluetooth/output keys are on the **left half only**, at the position of
@@ -130,6 +131,9 @@ To flash: connect USB, double-tap **reset** within 0.5 s, then drag the
 - Encoder direction is set in `config/eyelash_corne.keymap` (`rsr_vol`);
   swap `cw-binding` / `ccw-binding` if volume moves the wrong way.
 - Hold `Q + S + Z` for 2 s to soft off.
+- Hold-taps are `tap-preferred`/`hold-preferred` with
+  `hold-trigger-on-release`, so chords within a hand work: holding `S` then
+  holding `D` gives `Ctrl+Alt`, and holding two home mods combines them.
 - Bluetooth and output switching live on the Number layer, left half: `USB`
   (USB output), `OBL` (Bluetooth output), `P1`–`P5` (profile select), `BTC`
   (clear current profile's bond). See the Layer 2 legend.

@@ -43,7 +43,7 @@ a diagram row is binding N of that layer. Current Base layer, for reference:
 
 The halves are **not** offset symmetrically: left is `0–5 / 13–18 / 28–33`, right
 is `7–12 / 22–27 / 36–41`. The stick keys are `6` (`UP`), `19` (`LEFT`), `20`
-(`ENTER`), `21` (`RIGHT`); the two `-` cells between the halves are `34` and `35`.
+(`ENTER`), `21` (`RIGHT`); the two blank cells between the halves are `34` and `35`.
 Re-derive this as index/binding pairs from layer 0 before relying on it if the
 keymap changed shape, rather than trusting the table blindly.
 
@@ -78,7 +78,7 @@ The README diagram comes first, always. Steps:
 2. **Write the diagram** under a new `### Layer N — <Name>` heading, matching the
    existing style exactly: `LEFT HALF` / `RIGHT HALF` labels, `+---+` borders, the
    `THUMB KEYS` block, and the `THUMB STICK` block.
-3. **Fill unassigned cells with `-`** (transparent) — see the fill rule below.
+3. **Leave unassigned cells blank** (transparent) — see the fill rule below.
 4. **Append the layer node to the end of `keymap { }`** unless the user asked for a
    specific position. The **first node is always the default layer**, so appending
    never changes the default and keeps every existing `&thumb_lt N` / `&mo N`
@@ -93,16 +93,16 @@ The README diagram comes first, always. Steps:
 
 **Fill rule for a new layer:**
 
-- Default: every cell the user did not specify is `&trans` / `-` in the README, so
-  the layer inherits Base. Nothing else.
+- Default: every cell the user did not specify is `&trans` / blank in the README,
+  so the layer inherits Base. Nothing else.
 - If the user specifies bindings, use exactly those and `&trans` for the rest.
 - Only a layer that is **the new default layer** gets full content; a blank
   default layer would remove access to everything.
 - `&none` / `(none)` is only for a cell the user explicitly wants dead on that
   layer — it blocks inheritance, so never use it as a filler.
 
-**Blank diagram template.** Copy this into `README.md` and replace the `-` cells
-with the layer's bindings. The grid is 98 characters wide, identical to the
+**Blank diagram template.** Copy this into `README.md` and fill blank cells with
+the layer's bindings. The grid is 98 characters wide, identical to the
 Layer 0–2 diagrams: 6 cells of 7 chars, a `++` half divider, 6 cells of 7 chars.
 Keep the borders aligned; the `N`/`Name`/`held from` line and the thumb rows must
 be filled in for the specific layer.
@@ -115,17 +115,17 @@ Held from <where>.
 ```text
 LEFT HALF                                            RIGHT HALF
 +-------+-------+-------+-------+-------+-------++-------+-------+-------+-------+-------+-------+
-| -     | -     | -     | -     | -     | -     || -     | -     | -     | -     | -     | -     |
-+-------+-------+-------+-------+-------+-------++-------+-------+-------+-------+-------+-------+
-| -     | -     | -     | -     | -     | -     || -     | -     | -     | -     | -     | -     |
 |       |       |       |       |       |       ||       |       |       |       |       |       |
 +-------+-------+-------+-------+-------+-------++-------+-------+-------+-------+-------+-------+
-| -     | -     | -     | -     | -     | -     || -     | -     | -     | -     | -     | -     |
+|       |       |       |       |       |       ||       |       |       |       |       |       |
+|       |       |       |       |       |       ||       |       |       |       |       |       |
++-------+-------+-------+-------+-------+-------++-------+-------+-------+-------+-------+-------+
+|       |       |       |       |       |       ||       |       |       |       |       |       |
 +-------+-------+-------+-------+-------+-------++-------+-------+-------+-------+-------+-------+
 
 THUMB KEYS
-Left:  -                  | -                | -
-Right: -                  | -                | -
+Left:                    |                  |
+Right:                   |                  |
 
 THUMB STICK
           UP
@@ -170,8 +170,8 @@ the layer, and (for reorder) every layer index as in C. A rename of
 
 Modifier keycodes in this repo's style: `LSHFT LCTRL LALT LGUI RSHFT RCTRL RALT
 RGUI`, combined as `LC(...) LS(...) LA(...) LG(...)`. Diagram legend: `Ctrl`,
-`Shift`, `Alt`, `Cmd`, `key / hold` for hold-taps, `-` for transparent,
-`(none)` for `&none`.
+`Shift`, `Alt`, `Cmd`, `key / hold` for hold-taps, blank cells for transparent,
+`-` for a key that sends minus, `(none)` for `&none`.
 
 ## 5. Validate before finishing — mandatory
 
@@ -180,7 +180,7 @@ RGUI`, combined as `LC(...) LS(...) LA(...) LG(...)`. Diagram legend: `Ctrl`,
    says. Do this mechanically, not by eye: parse the `bindings = < … >;` blocks
    out of the keymap, translate each to its README spelling (`&kp Q` → `Q`,
    `&hm LSHFT A` → `A` over `Shift`, `&thumb_lt 2 ESC` → `ESC` (hold: that layer's
-   name), `&trans` → `-`, `&none` → `(none)`), and diff against a transcription of
+   name), `&trans` → blank, `&none` → `(none)`), and diff against a transcription of
    the README. The README already states each thumb hold by name
    (`ESC (hold: Number)`), so compare names, not raw indexes. Use the repo's own
    script if one exists; otherwise write a throwaway one, run it, paste its output
