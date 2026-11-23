@@ -62,9 +62,9 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <200>;
-            quick-tap-ms = <175>;
-            require-prior-idle-ms = <150>;
+            tapping-term-ms = <100>;
+            quick-tap-ms = <100>;
+            require-prior-idle-ms = <60>;
             bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <RIGHT_KEYS THUMB_KEYS>;
         };
@@ -74,9 +74,9 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <200>;
-            quick-tap-ms = <175>;
-            require-prior-idle-ms = <150>;
+            tapping-term-ms = <100>;
+            quick-tap-ms = <100>;
+            require-prior-idle-ms = <60>;
             bindings = <&mo>, <&kp>;
             hold-trigger-key-positions = <RIGHT_KEYS>;
         };
