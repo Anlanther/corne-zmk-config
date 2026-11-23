@@ -8,13 +8,13 @@ built on nice!nano v2 with a nice!view display on each half.
 
 ## Hardware
 
-| Part           | Detail                                                                                     |
-| -------------- | ------------------------------------------------------------------------------------------ |
-| Board          | `nice_nano_v2` ×2                                                                          |
-| Shield         | `eyelash_corne_left` / `eyelash_corne_right` (from a741725193/zmk-new_corne)               |
-| Display        | nice!view on both halves                                                                   |
-| Thumb scroller | EC11 encoder, **left half** — bound to volume (CCW down, CW up)                            |
-| Thumb stick    | 4 matrix keys (`UP` `LEFT` `RIGHT` `DOWN`) — arrow keys, not a pointer; centre key unbound |
+| Part           | Detail                                                                                           |
+| -------------- | ------------------------------------------------------------------------------------------------ |
+| Board          | `nice_nano_v2` ×2                                                                                |
+| Shield         | `eyelash_corne_left` / `eyelash_corne_right` (from a741725193/zmk-new_corne)                     |
+| Display        | nice!view on both halves                                                                         |
+| Thumb scroller | EC11 encoder, **left half** — bound to volume (CCW down, CW up)                                  |
+| Thumb stick    | 4 matrix keys + centre click (`UP` `LEFT` `CLICK` `RIGHT` `DOWN`) — macOS shortcuts on Base only |
 
 ## Layout
 
@@ -41,17 +41,17 @@ LEFT HALF                                            RIGHT HALF
 
 THUMB KEYS
 Left:  ESC (hold: Number) | ENT (hold: Utility) | DEL (hold: Cmd)
-Right: BKSP               | SPC (hold: Utility) | CAPS (hold: Number)
+Right: BKSP               | SPC (hold: Utility) | Opt+Esc (tap) / Number (hold)
 
 THUMB STICK
-          UP
-LEFT - (none) - RIGHT
-         DOWN
+                    Mission Control
+Show Desktop - Spotlight - Caps Lock
+                    Show Desktop
 ```
 
 ### Layer 1 — Utility
 
-Held from the left `ENT` thumb or the right `SPC` thumb.
+Held from the left `ESC` thumb or the right `Opt+Esc` thumb.
 
 ```text
 LEFT HALF                                                             RIGHT HALF
@@ -60,7 +60,7 @@ LEFT HALF                                                             RIGHT HALF
 +----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+----------+
 |          |          |          |          |          |          || =                    | LEFT     | DOWN     | RIGHT    |          |                      |          |
 +----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+----------+
-| F2       | Ctrl+Up  | F3       | Prev     | Play     | Next     || Cmd+Ctrl+Shift+4     |          |          |          |          | Cmd+Shift+5          | Cmd+Shift+4 |
+| F2       | Ctrl+Up  |          | Prev     | Play     | Next     || Cmd+Ctrl+Shift+4     |          |          |          |          | Cmd+Shift+5          | Cmd+Shift+4 |
 +----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+----------+
 
 THUMB STICK
@@ -71,7 +71,7 @@ LEFT - (none) - RIGHT
 
 ### Layer 2 — Number
 
-Held from the left `ESC` thumb or the right `CAPS` thumb. The left half's top row
+Held from the left `ESC` thumb (and by holding the right thumb's `Opt+Esc` key). The left half's top row
 (`Q W E R T` positions) selects Bluetooth profile P1–P5.
 
 ```text
@@ -103,6 +103,23 @@ LEFT - (none) - RIGHT
          DOWN
 ```
 
+### Thumb stick
+
+The stick's four directions plus its centre click are plain keys. They send macOS
+shortcuts on Base only; on Utility and Number they are transparent.
+
+| Gesture | Base             | Sends                                |
+| ------- | ---------------- | ------------------------------------ |
+| Up      | Mission Control  | `C_AC_DESKTOP_SHOW_ALL_APPLICATIONS` |
+| Down    | Show Desktop     | `C_AC_DESKTOP_SHOW_ALL_WINDOWS`      |
+| Left    | Launchpad        | `C_AC_SEARCH`                        |
+| Right   | Caps Lock toggle | `C_AC_SHOW_ALL_WINDOWS`              |
+| Click   | Spotlight        | `C_AC_SHOW_ALL_WINDOWS`              |
+
+> Launchpad needs _System Settings → Keyboard → Keyboard Shortcuts → Launchpad and
+> Dock → Show Launchpad_ turned on (assign a key, then press stick-left), because
+> macOS does not expose Launchpad on a consumer key.
+
 ### Thumb scroller
 
 On the **left half**. Rotating it sends volume keys on every layer.
@@ -132,8 +149,10 @@ To flash: connect USB, double-tap **reset** within 0.5 s, then drag the
   swap `cw-binding` / `ccw-binding` if volume moves the wrong way.
 - Hold `Q + S + Z` for 2 s to soft off.
 - Hold-taps are `tap-preferred`/`hold-preferred` with
-  `hold-trigger-on-release`, so chords within a hand work: holding `S` then
-  holding `D` gives `Ctrl+Alt`, and holding two home mods combines them.
+  `hold-trigger-on-release` and `require-prior-idle-ms = 80`, so chords within a
+  hand work (holding `S` then `D` gives `Ctrl+Alt`), a tap still fires if
+  released within 140 ms, and keys typed faster than 80 ms apart never turn into
+  stray home-row holds.
 - Bluetooth and output switching live on the Number layer, left half: `USB`
   (USB output), `OBL` (Bluetooth output), `P1`–`P5` (profile select), `BTC`
   (clear current profile's bond). See the Layer 2 legend.

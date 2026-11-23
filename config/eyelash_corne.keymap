@@ -7,25 +7,28 @@
  * row0: TAB      Q    W     E     R     T          UP                   Y       U    I      O     P     BSLH
  * row1: GRAVE    A    S     D     F     G  LEFT ENTER RIGHT    H        J    K      L     SEMI  SQT
  * row2: LSHFT    Z    X     C     V     B  ---- STICK ----   N       M    COMMA  DOT   FSLH  LSHFT
- * thr:                 LT(2,ESC) LT(1,RET) MT(LGUI,DEL)      BSPC  LT(1,SPACE) LT(2,CAPS)
+ * thr:                 LT(2,ESC) LT(1,RET) MT(LGUI,DEL)      BSPC  LT(1,SPACE) TD(Opt+Esc/Number)
  *
  * Thumb keys (left to right, matching the original corne.keymap):
  *   Left : ESC/NUMBER  RET/UTILITY  DEL/CMD
- *   Right: BKSP         SPC/UTILITY  CAPS/NUMBER
- * The stick's centre ENTER and the inner keys are MT/MO-free so the six
+ *   Right: BKSP         SPC/UTILITY  Opt+Esc (tap) / NUMBER (hold)
+ * The stick's centre click and the inner keys are MT/MO-free so the six
  * thumb keys above stay where your original map had them.
  *
  * Hardware:
  *   - Thumb scroller: one EC11 encoder on the LEFT half, bound to volume.
  *   - Thumb stick: four ordinary matrix keys (UP/LEFT/RIGHT/DOWN around a
- *     centre ENTER), i.e. the arrow keys. Not a pointing device.
+ *     centre CLICK), not a pointing device. Base binds macOS shortcuts:
+ *     UP Mission Control, DOWN Show Desktop, LEFT Launchpad, RIGHT Caps Lock
+ *     toggle, CLICK Spotlight. Utility leaves the stick transparent.
  *
  * Layer numbering: 0 = Base, 1 = Utility, 2 = Number.
  *
- * Hold-taps: `hm` (home mods) and `thumb_lt` / `thumb_lt_own` (right/left thumb
- * layer-taps) use `tapping-term-ms = 100`, `require-prior-idle-ms = 60` and
+ * Hold-taps: `hm` (home mods) and `thumb_lt` / `thumb_lt_own` (left/right thumb
+ * layer-taps) use `tapping-term-ms = 140`, `require-prior-idle-ms = 80` and
  * `hold-trigger-on-release`, so a same-hand chord resolves as a hold when the
- * second key is still down after 100 ms.
+ * second key is still down after 140 ms, a quick tap stays a tap, and a key
+ * pressed within 80 ms of the previous one never resolves to a hold.
  *
  * Number layer, left half:
  *   TAB   -> OUT_USB
@@ -49,21 +52,21 @@
 
 &soft_off { hold-time-ms = <2000>; };
 
-/* Position groups from `default_transform` in the shield's `eyelash_corne.dtsi`.
- * Used for combos, which index matrices. `hold-trigger-key-positions` below is
- * indexed by keymap position instead, so its groups are counted by hand.
- */
-#define LEFT_HAND  0 1 2 3 4 5 13 14 15 16 17 18 22 23 24 29 30 31
-#define RIGHT_HAND 7 8 9 10 11 12 19 20 21 25 26 27 28 32
-#define THUMBS     33 34 35 36 37 38
-
-/* Keymap positions: right half is 18..35, thumbs 36..41.
+/* Keymap positions (0-based, the order of the `bindings` arrays):
+ * left hand 0-5 / 13-18 / 28-33, right hand 7-12 / 22-27 / 36-41, thumbs 42-47.
+ * Combos and `hold-trigger-key-positions` both index these, not matrix cells.
  * LEFT_KEYS is RIGHT_KEYS' complement minus the stick keys 6/19/20/21 and thumbs;
  * 34 and 35 appear in both on purpose (they are neutral cells between the halves).
  */
-#define LEFT_KEYS 0 1 2 3 4 5 6 13 14 15 16 17 18 19 20 21 34 35
-#define RIGHT_KEYS 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
-#define THUMB_KEYS 36 37 38 39 40 41
+#define LEFT_KEYS 0 1 2 3 4 5 13 14 15 16 17 18 28 29 30 31 32 33 34 35
+#define RIGHT_KEYS 7 8 9 10 11 12 22 23 24 25 26 27 36 37 38 39 40 41 34 35
+#define THUMB_KEYS 42 43 44 45 46 47
+
+/* macOS shortcuts used by the thumb stick and the right thumb. */
+#define DESKTOP_SHOW_ALL_APPLICATIONS 0xC02A2
+#define DESKTOP_SHOW_ALL_WINDOWS 0xC029E
+#define SHOW_ALL_WINDOWS 0xC029F
+#define AC_SEARCH 0xC0221
 
 / {
     behaviors {
@@ -73,43 +76,54 @@
          * this, because same-hand presses are not in hold-trigger-key-positions.
          * The final decision is filtered on release, so tapping the other key
          * within tapping-term-ms still yields two taps.
+         *
+         * require-prior-idle-ms suppresses holds spelled out at typing speed; keep
+         * it below tapping-term-ms, or fast rolls turn home keys into stray mods.
          */
         hm: home_mods {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "hold-preferred";
-            tapping-term-ms = <100>;
-            quick-tap-ms = <100>;
-            require-prior-idle-ms = <60>;
+            tapping-term-ms = <140>;
+            quick-tap-ms = <140>;
+            require-prior-idle-ms = <80>;
             bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <RIGHT_KEYS THUMB_KEYS>;
             hold-trigger-on-release;
         };
 
-        /* Right thumb: hold only takes effect from the right hand, never the thumb cluster. */
+        /* Left ESC thumb: hold only triggers from right-hand keys, so the tap stays a tap. */
         thumb_lt: thumb_lt {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <100>;
-            quick-tap-ms = <100>;
-            require-prior-idle-ms = <60>;
+            tapping-term-ms = <140>;
+            quick-tap-ms = <140>;
+            require-prior-idle-ms = <80>;
             bindings = <&mo>, <&kp>;
             hold-trigger-key-positions = <RIGHT_KEYS>;
             hold-trigger-on-release;
         };
 
-        /* Left thumb: hold takes effect from either half, i.e. left hand or thumbs. */
+        /* Right SPC thumb: hold only triggers from left-hand/thumb keys, so the tap stays a tap. */
         thumb_lt_own: thumb_lt_own {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "hold-preferred";
-            tapping-term-ms = <100>;
-            quick-tap-ms = <100>;
-            require-prior-idle-ms = <60>;
+            tapping-term-ms = <140>;
+            quick-tap-ms = <140>;
+            require-prior-idle-ms = <80>;
             bindings = <&mo>, <&kp>;
             hold-trigger-key-positions = <LEFT_KEYS THUMB_KEYS>;
             hold-trigger-on-release;
+        };
+
+        /* Tap = Opt+Esc. The hold fires on release, so rapid tapping never holds Number. */
+        number_caps: number_caps {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp LA(ESC)>, <&mo 2>;
         };
 
         /*
@@ -149,10 +163,10 @@
         default_layer {
             display-name = "Base";
             bindings = <
-&kp TAB    &kp Q  &kp W  &kp E     &kp R  &kp T                               &kp UP                &kp Y        &kp U  &kp I      &kp O    &kp P     &kp BSLH
-&kp GRAVE  &hm LSHFT A  &hm LCTRL S  &hm LALT D  &hm LGUI F  &kp G   &kp LEFT  &kp ENTER  &kp RIGHT  &kp H        &hm RGUI J  &hm RALT K  &hm RCTRL L  &hm RSHFT SEMI  &kp SQT
+&kp TAB    &kp Q  &kp W  &kp E     &kp R  &kp T                              &kp DESKTOP_SHOW_ALL_APPLICATIONS  &kp Y        &kp U  &kp I      &kp O    &kp P     &kp BSLH
+&kp GRAVE  &hm LSHFT A  &hm LCTRL S  &hm LALT D  &hm LGUI F  &kp G   &kp DESKTOP_SHOW_ALL_WINDOWS  &kp AC_SEARCH  &kp SHOW_ALL_WINDOWS  &kp H        &hm RGUI J  &hm RALT K  &hm RCTRL L  &hm RSHFT SEMI  &kp SQT
 &kp LSHFT  &kp Z  &kp X  &kp C     &kp V  &kp B        &trans                 &trans                &kp N        &kp M  &kp COMMA  &kp DOT  &kp FSLH  &kp LSHFT
-                         &thumb_lt 2 ESC  &thumb_lt 1 RET  &hm LGUI DEL                                              &kp BSPC  &thumb_lt_own 1 SPACE  &thumb_lt 2 CAPS
+                         &thumb_lt 2 ESC  &thumb_lt 1 RET  &hm LGUI DEL                                              &kp BSPC  &thumb_lt_own 1 SPACE  &number_caps
             >;
 
             sensor-bindings = <&rsr_vol &rsr_trans>;
