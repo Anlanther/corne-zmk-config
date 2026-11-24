@@ -7,28 +7,29 @@
  * row0: TAB      Q    W     E     R     T          UP                   Y       U    I      O     P     BSLH
  * row1: GRAVE    A    S     D     F     G  LEFT ENTER RIGHT    H        J    K      L     SEMI  SQT
  * row2: LSHFT    Z    X     C     V     B  ---- STICK ----   N       M    COMMA  DOT   FSLH  LSHFT
- * thr:                 LT(2,ESC) LT(1,RET) MT(LGUI,DEL)      BSPC  LT(1,SPACE) TD(Opt+Esc/Number)
+ * thr:                 LT(2,ESC) LT(1,RET) MT(LGUI,DEL)      BSPC  LT(1,SPACE) LT(2,Opt+Esc)
  *
  * Thumb keys (left to right, matching the original corne.keymap):
  *   Left : ESC/NUMBER  RET/UTILITY  DEL/CMD
  *   Right: BKSP         SPC/UTILITY  Opt+Esc (tap) / NUMBER (hold)
- * The stick's centre click and the inner keys are MT/MO-free so the six
- * thumb keys above stay where your original map had them.
+ * The inner keys are MT/MO-free so the six thumb keys above stay where your
+ * original map had them.
  *
  * Hardware:
  *   - Thumb scroller: one EC11 encoder on the LEFT half, bound to volume.
- *   - Thumb stick: four ordinary matrix keys (UP/LEFT/RIGHT/DOWN around a
- *     centre CLICK), not a pointing device. Base binds macOS shortcuts:
- *     UP Mission Control, DOWN Show Desktop, LEFT Launchpad, RIGHT Caps Lock
- *     toggle, CLICK Spotlight. Utility leaves the stick transparent.
+ *   - Thumb stick: five ordinary matrix keys in a cross (matrix column 12), not a
+ *     pointing device. Keymap positions: up 6, left 19, click 20, right 21 and
+ *     down 35 (the transform's RC(1,12), previously left unbound). Base binds:
+ *     UP Mission Control, LEFT Launchpad, RIGHT Caps Lock toggle, CLICK
+ *     Spotlight, DOWN Show Desktop.
  *
  * Layer numbering: 0 = Base, 1 = Utility, 2 = Number.
  *
  * Hold-taps: `hm` (home mods) and `thumb_lt` / `thumb_lt_own` (left/right thumb
- * layer-taps) use `tapping-term-ms = 140`, `require-prior-idle-ms = 80` and
- * `hold-trigger-on-release`, so a same-hand chord resolves as a hold when the
- * second key is still down after 140 ms, a quick tap stays a tap, and a key
- * pressed within 80 ms of the previous one never resolves to a hold.
+ * layer-taps) use `tapping-term-ms = 200`, `require-prior-idle-ms = 175`,
+ * `flavor = "balanced"` and `hold-trigger-on-release`. A hold only wins if the
+ * interrupting key is still down when the hold key is released, and a key
+ * pressed within 175 ms of the previous one is always a tap.
  *
  * Number layer, left half:
  *   TAB   -> OUT_USB
@@ -55,38 +56,37 @@
 /* Keymap positions (0-based, the order of the `bindings` arrays):
  * left hand 0-5 / 13-18 / 28-33, right hand 7-12 / 22-27 / 36-41, thumbs 42-47.
  * Combos and `hold-trigger-key-positions` both index these, not matrix cells.
- * LEFT_KEYS is RIGHT_KEYS' complement minus the stick keys 6/19/20/21 and thumbs;
- * 34 and 35 appear in both on purpose (they are neutral cells between the halves).
+ * LEFT_KEYS is RIGHT_KEYS' complement minus the stick keys 6/19/20/21/35 and thumbs;
+ * 34 appears in both on purpose (it is the neutral cell between the halves).
  */
-#define LEFT_KEYS 0 1 2 3 4 5 13 14 15 16 17 18 28 29 30 31 32 33 34 35
-#define RIGHT_KEYS 7 8 9 10 11 12 22 23 24 25 26 27 36 37 38 39 40 41 34 35
+#define LEFT_KEYS 0 1 2 3 4 5 13 14 15 16 17 18 28 29 30 31 32 33 34
+#define RIGHT_KEYS 7 8 9 10 11 12 22 23 24 25 26 27 36 37 38 39 40 41 34
 #define THUMB_KEYS 42 43 44 45 46 47
 
-/* macOS shortcuts used by the thumb stick and the right thumb. */
-#define DESKTOP_SHOW_ALL_APPLICATIONS 0xC02A2
-#define DESKTOP_SHOW_ALL_WINDOWS 0xC029E
-#define SHOW_ALL_WINDOWS 0xC029F
-#define AC_SEARCH 0xC0221
+/* macOS shortcuts used by the thumb stick. Values are HID usage codes
+ * ((page << 16) | id): 0x29F = Desktop Show All Windows (Mission Control),
+ * 0x2A2 = Desktop Show All Applications (Launchpad). */
+#define MISSION_CONTROL 0xC029F
+#define LAUNCHPAD 0xC02A2
 
 / {
     behaviors {
         /*
-         * hold-preferred + hold-trigger-on-release: a same-hand key still held when
-         * tapping-term-ms expires resolves to a hold. tap-preferred can never do
-         * this, because same-hand presses are not in hold-trigger-key-positions.
-         * The final decision is filtered on release, so tapping the other key
-         * within tapping-term-ms still yields two taps.
+         * balanced + hold-trigger-on-release: the hold only wins if the interrupting
+         * key is still held when the home key is released. A quick tap stays a tap
+         * even during a cross-hand roll, which is what hold-preferred got wrong: any
+         * interrupt inside tapping-term-ms was committed to a hold (a stuck modifier).
          *
-         * require-prior-idle-ms suppresses holds spelled out at typing speed; keep
-         * it below tapping-term-ms, or fast rolls turn home keys into stray mods.
+         * require-prior-idle-ms forces a tap when the previous keystroke was more
+         * recent than this, so typing at speed never resolves to a hold.
          */
         hm: home_mods {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "hold-preferred";
-            tapping-term-ms = <140>;
-            quick-tap-ms = <140>;
-            require-prior-idle-ms = <80>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <175>;
             bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <RIGHT_KEYS THUMB_KEYS>;
             hold-trigger-on-release;
@@ -96,34 +96,26 @@
         thumb_lt: thumb_lt {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <140>;
-            quick-tap-ms = <140>;
-            require-prior-idle-ms = <80>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <175>;
             bindings = <&mo>, <&kp>;
             hold-trigger-key-positions = <RIGHT_KEYS>;
             hold-trigger-on-release;
         };
 
-        /* Right SPC thumb: hold only triggers from left-hand/thumb keys, so the tap stays a tap. */
+        /* Right thumbs (SPC and Opt+Esc): hold only triggers from left-hand/thumb keys. */
         thumb_lt_own: thumb_lt_own {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "hold-preferred";
-            tapping-term-ms = <140>;
-            quick-tap-ms = <140>;
-            require-prior-idle-ms = <80>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <175>;
             bindings = <&mo>, <&kp>;
             hold-trigger-key-positions = <LEFT_KEYS THUMB_KEYS>;
             hold-trigger-on-release;
-        };
-
-        /* Tap = Opt+Esc. The hold fires on release, so rapid tapping never holds Number. */
-        number_caps: number_caps {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp LA(ESC)>, <&mo 2>;
         };
 
         /*
@@ -163,10 +155,10 @@
         default_layer {
             display-name = "Base";
             bindings = <
-&kp TAB    &kp Q  &kp W  &kp E     &kp R  &kp T                              &kp DESKTOP_SHOW_ALL_APPLICATIONS  &kp Y        &kp U  &kp I      &kp O    &kp P     &kp BSLH
-&kp GRAVE  &hm LSHFT A  &hm LCTRL S  &hm LALT D  &hm LGUI F  &kp G   &kp DESKTOP_SHOW_ALL_WINDOWS  &kp AC_SEARCH  &kp SHOW_ALL_WINDOWS  &kp H        &hm RGUI J  &hm RALT K  &hm RCTRL L  &hm RSHFT SEMI  &kp SQT
-&kp LSHFT  &kp Z  &kp X  &kp C     &kp V  &kp B        &trans                 &trans                &kp N        &kp M  &kp COMMA  &kp DOT  &kp FSLH  &kp LSHFT
-                         &thumb_lt 2 ESC  &thumb_lt 1 RET  &hm LGUI DEL                                              &kp BSPC  &thumb_lt_own 1 SPACE  &number_caps
+&kp TAB    &kp Q  &kp W  &kp E     &kp R  &kp T                              &kp MISSION_CONTROL  &kp Y        &kp U  &kp I      &kp O    &kp P     &kp BSLH
+&kp GRAVE  &hm LSHFT A  &hm LCTRL S  &hm LALT D  &hm LGUI F  &kp G   &kp LAUNCHPAD  &kp LG(SPACE)  &kp CAPS  &kp H        &hm RGUI J  &hm RALT K  &hm RCTRL L  &hm RSHFT SEMI  &kp SQT
+&kp LSHFT  &kp Z  &kp X  &kp C     &kp V  &kp B        &trans                 &kp F11                &kp N        &kp M  &kp COMMA  &kp DOT  &kp FSLH  &kp LSHFT
+                         &thumb_lt 2 ESC  &thumb_lt 1 RET  &hm LGUI DEL                                              &kp BSPC  &thumb_lt_own 1 SPACE  &thumb_lt 2 LA(ESC)
             >;
 
             sensor-bindings = <&rsr_vol &rsr_trans>;

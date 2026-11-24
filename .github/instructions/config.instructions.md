@@ -15,7 +15,9 @@ This directory holds the **only** files that configure the keyboard. Follow
 - New behaviours/combos go above `keymap { }`; `#binding-cells` (or
   `#sensor-binding-cells` for encoder behaviours) must match the parameters used.
 - Reuse `home_mods` via `&hm <MOD> <KEY>` and `thumb_lt` via `&thumb_lt <layer> <key>`
-  instead of bare `&mt` / `&lt`.
+  instead of bare `&mt` / `&lt`. Don't retune their flavour, timings or
+  `hold-trigger-key-positions`, and don't put a combo on a chorded home-row mod
+  pair — read `user-preference-docs/typing-profile.md` (if present) first.
 - `CONFIG_*` belongs in `eyelash_corne.conf`; it applies to both halves. Use
   `&rgb_ug RGB_ON` / `RGB_OFF` — never `&ext_power EP_*`.
 - Don't rename the `.keymap` / `.conf` files. Don't bump `west.yml` revisions

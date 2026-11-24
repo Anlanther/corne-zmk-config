@@ -11,6 +11,15 @@ A ZMK **user config** repo (not ZMK itself) for an **Eyelash Peripherals Corne**
 > **Not a foostan Corne.** `corne_left` / `corne_right` shields are wrong here.
 > Always use `eyelash_corne_left` / `eyelash_corne_right`.
 
+## User preferences (optional)
+
+If a `user-preference-docs/` folder exists, read `user-preference-docs/README.md`
+first. It holds owner-specific working-style and typing/ergonomics preferences
+that take priority over the general defaults in this file, plus
+`qmk-reference.md` — a record-only QMK layout from a different keyboard whose key
+bindings must not be followed. If the folder is absent, follow this guide as
+written.
+
 ## Ground truth (read before editing)
 
 | File                          | What it is                                                                                                      |
@@ -44,36 +53,20 @@ Pick the file by task, don't read them all:
 
 Verify against the `config/` files; the docs describe the **default firmware**.
 
-| Topic            | reference-docs say                                                             | This repo actually does                                                                                                                                                                                |
-| ---------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Layers           | 4 layers: `default_layer`, `lower_layer`, `raise_layer`, `layer_3` (`FW`/`FN`) | **3 layers**: `default_layer`, `utility_layer`, `number_layer`. No `layer_3`.                                                                                                                          |
-| Display names    | `QWERTY` / `NUMBER` / `SYMBOL` / `FN`                                          | `Base` / `Utility` / `Number`                                                                                                                                                                          |
-| Tap-dance `&td0` | Top-left key tap-dance (Shift / Caps)                                          | **Not used** at the top-left. `&number_caps` (tap `Opt+Esc`, hold Number) sits on the right thumb; otherwise `&hm` home-mods + `&thumb_lt`.                                                            |
-| Mouse / joystick | Center cluster is a pointer sensor, `&mmv`/`&mkp`                              | Thumb stick is **5 matrix keys**: 4 directions + centre click, bound to macOS shortcuts (`C_AC_*`) on Base only, transparent on other layers. `CONFIG_ZMK_POINTING=y` is set but no pointing bindings. |
-| Files            | `corne.keymap`, `corne.conf`, `corne.dtsi`, `corne_left.dts` …                 | `eyelash_corne.keymap`, `eyelash_corne.conf`. Shield DTS lives in the `eyelash_corne` module, not in this repo.                                                                                        |
-| `settings_reset` | In shipped bundle                                                              | Present in `build.yaml` (target available if needed).                                                                                                                                                  |
-| Encoder          | `&inc_dec_kp` with per-layer `sensor-bindings`                                 | `&rsr_vol` / `&rsr_trans` = `zmk,behavior-runtime-sensor-rotate` (volume on every layer).                                                                                                              |
-| Soft off         | `&soft_off` on a key, plus `EP_*` keys                                         | Combo `Q+S+Z` + `CONFIG_ZMK_PM_SOFT_OFF=y`; no `EP_*` keys.                                                                                                                                            |
-| Sofle notes      | Interspersed for comparison                                                    | Not applicable — ignore Sofle sections.                                                                                                                                                                |
+| Topic            | reference-docs say                                                             | This repo actually does                                                                                                                                                                                                          |
+| ---------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Layers           | 4 layers: `default_layer`, `lower_layer`, `raise_layer`, `layer_3` (`FW`/`FN`) | **3 layers**: `default_layer`, `utility_layer`, `number_layer`. No `layer_3`.                                                                                                                                                    |
+| Display names    | `QWERTY` / `NUMBER` / `SYMBOL` / `FN`                                          | `Base` / `Utility` / `Number`                                                                                                                                                                                                    |
+| Tap-dance `&td0` | Top-left key tap-dance (Shift / Caps)                                          | **Not used.** `&hm` home-mods + `&thumb_lt` layer-taps; the rightmost right thumb is `&thumb_lt 2 LA(ESC)` (tap `Opt+Esc`, hold Number).                                                                                         |
+| Mouse / joystick | Center cluster is a pointer sensor, `&mmv`/`&mkp`                              | Thumb stick is **5 matrix keys** in a cross (up `6`, left `19`, click `20`, right `21`, down `35`), bound to macOS shortcuts on Base only, transparent on other layers. `CONFIG_ZMK_POINTING=y` is set but no pointing bindings. |
+| Files            | `corne.keymap`, `corne.conf`, `corne.dtsi`, `corne_left.dts` …                 | `eyelash_corne.keymap`, `eyelash_corne.conf`. Shield DTS lives in the `eyelash_corne` module, not in this repo.                                                                                                                  |
+| `settings_reset` | In shipped bundle                                                              | Present in `build.yaml` (target available if needed).                                                                                                                                                                            |
+| Encoder          | `&inc_dec_kp` with per-layer `sensor-bindings`                                 | `&rsr_vol` / `&rsr_trans` = `zmk,behavior-runtime-sensor-rotate` (volume on every layer).                                                                                                                                        |
+| Soft off         | `&soft_off` on a key, plus `EP_*` keys                                         | Combo `Q+S+Z` + `CONFIG_ZMK_PM_SOFT_OFF=y`; no `EP_*` keys.                                                                                                                                                                      |
+| Sofle notes      | Interspersed for comparison                                                    | Not applicable — ignore Sofle sections.                                                                                                                                                                                          |
 
 `reference-docs/index.md` and `build-and-flash.md` also link to `../docs/…` — that
 folder is **not in this repo**. If a link is dead, fall back to zmk.dev.
-
-## Working style (owner preference)
-
-1. **Never estimate effort, time, or complexity.** Time estimates are noise here —
-   the agent works in seconds. Report what is needed and what was verified, not
-   "this will take a couple of hours".
-2. **Always implement the best solution, not a shortcut.** Don't offer a
-   degrade-to-nothing fallback as the recommendation, don't half-build a feature,
-   and don't leave TODO stubs wired into the build. If the correct solution is
-   large, do the large correct solution; if the hardware makes it impossible,
-   show the evidence from the devicetree/hardware files rather than guessing.
-3. **Don't ask permission for the recommended path.** Present the plan, then
-   execute it end to end and validate.
-4. **Write minimal comments.** Comment only non-obvious intent, constraints or
-   workarounds. No restating code, no file-header essays, no changelog
-   commentary in the source. If a comment explains _why_, keep it to one line.
 
 ## Rules for editing this repo
 
@@ -91,9 +84,11 @@ folder is **not in this repo**. If a link is dead, fall back to zmk.dev.
 5. **Layer indexes in `&mo` / `&thumb_lt N` are positional** (0 = first node in
    `keymap { }`). Recheck them after adding/removing/reordering a layer.
 6. **`&mo` vs `&thumb_lt`**: this repo defines local hold-tap behaviours
-   (`home_mods`, `thumb_lt`) with `tap-preferred` + `hold-trigger-key-positions`.
-   Prefer reusing them over bare `&lt` / `&mt`, and note that `home_mods` maps to
-   `&kp` on hold, so use `&hm <MOD> <KEY>` (e.g. `&hm LSHFT A`).
+   (`home_mods`, `thumb_lt`, `thumb_lt_own`) with `balanced` +
+   `hold-trigger-on-release` + `hold-trigger-key-positions` — see
+   `user-preference-docs/typing-profile.md` when that folder exists. Prefer
+   reusing them over bare `&lt` / `&mt`, and note that `home_mods` maps to `&kp`
+   on hold, so use `&hm <MOD> <KEY>` (e.g. `&hm LSHFT A`).
 7. **`CONFIG_*` changes go in `config/eyelash_corne.conf`**, not into shield DTS.
    The conf applies to both halves; split-only settings need the shield's per-half conf.
 8. **Don't rename** `eyelash_corne.keymap` / `eyelash_corne.conf`; the name must
@@ -139,5 +134,7 @@ changed — see `reference-docs/build-and-flash.md`).
 - Check that any `&behaviour` you added is defined above `keymap { }` and its
   `#binding-cells` match.
 - If you changed a layer's intent, update `README.md` and the keymap header comment.
+- When `user-preference-docs/` exists, also satisfy the checks in its `README.md`
+  and `typing-profile.md`.
 - Don't attempt `west build` locally unless the user asks — the toolchain and
   module revisions are pinned by CI.

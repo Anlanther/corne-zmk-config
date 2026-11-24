@@ -173,6 +173,12 @@ RGUI`, combined as `LC(...) LS(...) LA(...) LG(...)`. Diagram legend: `Ctrl`,
 `Shift`, `Alt`, `Cmd`, `key / hold` for hold-taps, blank cells for transparent,
 `-` for a key that sends minus, `(none)` for `&none`.
 
+Hold-tap flavour and timings belong to the owner's typing profile
+(`user-preference-docs/typing-profile.md`, if present). Reuse the existing
+`hm` / `thumb_lt` / `thumb_lt_own` unchanged rather than retuning them per layer,
+and don't put a combo on a chorded home-row mod pair (`A`/`S` and the rest of the
+home row).
+
 ## 5. Validate before finishing — mandatory
 
 1. **Count and compare.** Every layer must have exactly 48 bindings (no more, no
@@ -198,6 +204,10 @@ RGUI`, combined as `LC(...) LS(...) LA(...) LG(...)`. Diagram legend: `Ctrl`,
    divergences" if the layer count/names changed, and
    `.agents/skills/reference-docs-navigation/SKILL.md` if it lists the layers.
    Do not edit `reference-docs/`.
+6. **Check the typing profile.** If you touched hold-taps, the home row or combos,
+   re-read `user-preference-docs/typing-profile.md` (if present) and confirm you
+   left the flavour, timings and hand-gating intact — and that no new combo sits
+   on a chorded home-row pair.
 
 ## 6. Report gaps, don't silently pad
 

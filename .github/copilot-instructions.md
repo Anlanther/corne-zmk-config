@@ -6,6 +6,9 @@ ground-truth files (`config/eyelash_corne.keymap`, `config/eyelash_corne.conf`,
 places where those docs disagree with this repo, and the rules for editing the
 keymap.
 
+If a `user-preference-docs/` folder exists, read its `README.md` as well; it holds
+owner-specific working-style and typing/ergonomics preferences.
+
 Path-scoped instructions:
 
 - `config/**` → `.github/instructions/config.instructions.md`

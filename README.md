@@ -8,13 +8,13 @@ built on nice!nano v2 with a nice!view display on each half.
 
 ## Hardware
 
-| Part           | Detail                                                                                           |
-| -------------- | ------------------------------------------------------------------------------------------------ |
-| Board          | `nice_nano_v2` ×2                                                                                |
-| Shield         | `eyelash_corne_left` / `eyelash_corne_right` (from a741725193/zmk-new_corne)                     |
-| Display        | nice!view on both halves                                                                         |
-| Thumb scroller | EC11 encoder, **left half** — bound to volume (CCW down, CW up)                                  |
-| Thumb stick    | 4 matrix keys + centre click (`UP` `LEFT` `CLICK` `RIGHT` `DOWN`) — macOS shortcuts on Base only |
+| Part           | Detail                                                                          |
+| -------------- | ------------------------------------------------------------------------------- |
+| Board          | `nice_nano_v2` ×2                                                               |
+| Shield         | `eyelash_corne_left` / `eyelash_corne_right` (from a741725193/zmk-new_corne)    |
+| Display        | nice!view on both halves                                                        |
+| Thumb scroller | EC11 encoder, **left half** — bound to volume (CCW down, CW up)                 |
+| Thumb stick    | 5-way cross (`UP` `LEFT` `CLICK` `RIGHT` `DOWN`) — macOS shortcuts on Base only |
 
 ## Layout
 
@@ -44,9 +44,9 @@ Left:  ESC (hold: Number) | ENT (hold: Utility) | DEL (hold: Cmd)
 Right: BKSP               | SPC (hold: Utility) | Opt+Esc (tap) / Number (hold)
 
 THUMB STICK
-                    Mission Control
-Show Desktop - Spotlight - Caps Lock
-                    Show Desktop
+          Mission Control
+Launchpad - Spotlight - Caps Lock
+          Show Desktop
 ```
 
 ### Layer 1 — Utility
@@ -55,13 +55,13 @@ Held from the left `ESC` thumb or the right `Opt+Esc` thumb.
 
 ```text
 LEFT HALF                                                             RIGHT HALF
-+----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+----------+
-|          |          |          | TAB      |          |          || (                    | )        | UP       | [        | ]        |                      | -        |
-+----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+----------+
-|          |          |          |          |          |          || =                    | LEFT     | DOWN     | RIGHT    |          |                      |          |
-+----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+----------+
++----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+-------------+
+|          |          |          | TAB      |          |          || (                    | )        | UP       | [        | ]        |                      | -           |
++----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+-------------+
+|          |          |          |          |          |          || =                    | LEFT     | DOWN     | RIGHT    |          |                      |             |
++----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+-------------+
 | F2       | Ctrl+Up  |          | Prev     | Play     | Next     || Cmd+Ctrl+Shift+4     |          |          |          |          | Cmd+Shift+5          | Cmd+Shift+4 |
-+----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+----------+
++----------+----------+----------+----------+----------+----------++----------------------+----------+----------+----------+----------+----------------------+-------------+
 
 THUMB STICK
           UP
@@ -108,17 +108,20 @@ LEFT - (none) - RIGHT
 The stick's four directions plus its centre click are plain keys. They send macOS
 shortcuts on Base only; on Utility and Number they are transparent.
 
-| Gesture | Base             | Sends                                |
-| ------- | ---------------- | ------------------------------------ |
-| Up      | Mission Control  | `C_AC_DESKTOP_SHOW_ALL_APPLICATIONS` |
-| Down    | Show Desktop     | `C_AC_DESKTOP_SHOW_ALL_WINDOWS`      |
-| Left    | Launchpad        | `C_AC_SEARCH`                        |
-| Right   | Caps Lock toggle | `C_AC_SHOW_ALL_WINDOWS`              |
-| Click   | Spotlight        | `C_AC_SHOW_ALL_WINDOWS`              |
+| Gesture | Base             | Binding                         |
+| ------- | ---------------- | ------------------------------- |
+| Up      | Mission Control  | `&kp MISSION_CONTROL` (`0x29F`) |
+| Down    | Show Desktop     | `&kp F11`                       |
+| Left    | Launchpad        | `&kp LAUNCHPAD` (`0x2A2`)       |
+| Right   | Caps Lock toggle | `&kp CAPS`                      |
+| Click   | Spotlight        | `&kp LG(SPACE)` (Cmd+Space)     |
 
-> Launchpad needs _System Settings → Keyboard → Keyboard Shortcuts → Launchpad and
-> Dock → Show Launchpad_ turned on (assign a key, then press stick-left), because
-> macOS does not expose Launchpad on a consumer key.
+Keymap positions for the cross are up `6`, left `19`, click `20`, right `21`,
+down `35` (matrix column 12, rows 0–4).
+
+> Down sends `F11`, which is macOS's default _Show Desktop_ shortcut
+> (_System Settings → Keyboard → Keyboard Shortcuts → Mission Control_). If it does
+> nothing, that shortcut has been reassigned.
 
 ### Thumb scroller
 
@@ -148,11 +151,14 @@ To flash: connect USB, double-tap **reset** within 0.5 s, then drag the
 - Encoder direction is set in `config/eyelash_corne.keymap` (`rsr_vol`);
   swap `cw-binding` / `ccw-binding` if volume moves the wrong way.
 - Hold `Q + S + Z` for 2 s to soft off.
-- Hold-taps are `tap-preferred`/`hold-preferred` with
-  `hold-trigger-on-release` and `require-prior-idle-ms = 80`, so chords within a
-  hand work (holding `S` then `D` gives `Ctrl+Alt`), a tap still fires if
-  released within 140 ms, and keys typed faster than 80 ms apart never turn into
-  stray home-row holds.
+- Hold-taps (`hm`, `thumb_lt`, `thumb_lt_own`) are `balanced` with
+  `hold-trigger-on-release`, `tapping-term-ms = 200` and
+  `require-prior-idle-ms = 175`: a hold only wins if the interrupting key is still
+  down when the hold key is released, and anything typed within 175 ms of the
+  previous key is always a tap, so fast rolls no longer become stuck modifiers.
+  These timings are tuned to the owner's typing profile (90–100 WPM, fast rolls,
+  deliberate home-row chords) — see `user-preference-docs/typing-profile.md` (if
+  present) before changing them.
 - Bluetooth and output switching live on the Number layer, left half: `USB`
   (USB output), `OBL` (Bluetooth output), `P1`–`P5` (profile select), `BTC`
   (clear current profile's bond). See the Layer 2 legend.
