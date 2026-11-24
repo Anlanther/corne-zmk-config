@@ -13,8 +13,8 @@ way round, and never silently.
 ## 1. Before editing — read and lock the current state
 
 1. Read `README.md` (layer diagrams) and `config/eyelash_corne.keymap`.
-2. Read the position map and binding rules in `reference-docs/layers.md` +
-   `reference-docs/custom-behaviours.md` **only if** you need keycode syntax or a
+2. Read the position map and binding rules in `docs/reference/layers.md` +
+   `docs/reference/custom-behaviours.md` **only if** you need keycode syntax or a
    behaviour the repo does not already define. `AGENTS.md` → "Rules for editing
    this repo" overrides anything there.
 3. Run the layer check (section 5) **before** changing anything. If it already
@@ -174,7 +174,7 @@ RGUI`, combined as `LC(...) LS(...) LA(...) LG(...)`. Diagram legend: `Ctrl`,
 `-` for a key that sends minus, `(none)` for `&none`.
 
 Hold-tap flavour and timings belong to the owner's typing profile
-(`user-preference-docs/typing-profile.md`, if present). Reuse the existing
+(`docs/user-preference/typing-profile.md`, if present). Reuse the existing
 `hm` / `thumb_lt` / `thumb_lt_own` unchanged rather than retuning them per layer,
 and don't put a combo on a chorded home-row mod pair (`A`/`S` and the rest of the
 home row).
@@ -203,9 +203,9 @@ home row).
    (`thumb scroller`, `Notes`, the Bluetooth legend), `AGENTS.md` → "Known
    divergences" if the layer count/names changed, and
    `.agents/skills/reference-docs-navigation/SKILL.md` if it lists the layers.
-   Do not edit `reference-docs/`.
+   Do not edit `docs/reference/`.
 6. **Check the typing profile.** If you touched hold-taps, the home row or combos,
-   re-read `user-preference-docs/typing-profile.md` (if present) and confirm you
+   re-read `docs/user-preference/typing-profile.md` (if present) and confirm you
    left the flavour, timings and hand-gating intact — and that no new combo sits
    on a chorded home-row pair.
 

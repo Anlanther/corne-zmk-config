@@ -157,7 +157,7 @@ To flash: connect USB, double-tap **reset** within 0.5 s, then drag the
   down when the hold key is released, and anything typed within 175 ms of the
   previous key is always a tap, so fast rolls no longer become stuck modifiers.
   These timings are tuned to the owner's typing profile (90–100 WPM, fast rolls,
-  deliberate home-row chords) — see `user-preference-docs/typing-profile.md` (if
+  deliberate home-row chords) — see `docs/user-preference/typing-profile.md` (if
   present) before changing them.
 - Bluetooth and output switching live on the Number layer, left half: `USB`
   (USB output), `OBL` (Bluetooth output), `P1`–`P5` (profile select), `BTC`

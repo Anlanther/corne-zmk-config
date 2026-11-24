@@ -13,8 +13,8 @@ A ZMK **user config** repo (not ZMK itself) for an **Eyelash Peripherals Corne**
 
 ## User preferences (optional)
 
-If a `user-preference-docs/` folder exists, read `user-preference-docs/README.md`
-first. It holds owner-specific working-style and typing/ergonomics preferences
+If a `docs/user-preference/` folder exists, read
+`docs/user-preference/README.md` first. It holds owner-specific working-style and typing/ergonomics preferences
 that take priority over the general defaults in this file, plus
 `qmk-reference.md` — a record-only QMK layout from a different keyboard whose key
 bindings must not be followed. If the folder is absent, follow this guide as
@@ -31,9 +31,9 @@ written.
 | `.github/workflows/build.yml` | Reusable upstream ZMK build workflow. Builds on every push.                                                     |
 | `README.md`                   | Human-facing layer diagrams — keep in sync with the keymap.                                                     |
 
-## How to use `reference-docs/`
+## How to use `docs/reference/`
 
-`reference-docs/` describes the **shipped/default** Corne config and general ZMK
+`docs/reference/` describes the **shipped/default** Corne config and general ZMK
 guidance. It is **reference, not truth for this repo** — several files don't match
 the custom build. Do not treat it as the current keymap.
 
@@ -41,19 +41,19 @@ Pick the file by task, don't read them all:
 
 | You are about to…                                              | Read first                                                                |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| Change layers, keycodes, hold-taps, combos, encoder bindings   | `reference-docs/layers.md`, `reference-docs/custom-behaviours.md`         |
-| Add/adjust `CONFIG_*` options                                  | `reference-docs/config-options.md`                                        |
-| Touch `build.yaml`, `west.yml`, or explain artifacts/flashing  | `reference-docs/build-and-flash.md`                                       |
-| Diagnose a build failure or "wrong keys / wrong layer" symptom | `reference-docs/troubleshooting.md`                                       |
-| Look up a keycode or upstream behaviour                        | `reference-docs/references.md` (then zmk.dev), `reference-docs/layers.md` |
-| Touch the matrix, pins, encoder, display hardware              | `reference-docs/hardware.md`                                              |
-| Unsure which doc applies                                       | `reference-docs/index.md` (has the full map)                              |
+| Change layers, keycodes, hold-taps, combos, encoder bindings   | `docs/reference/layers.md`, `docs/reference/custom-behaviours.md`         |
+| Add/adjust `CONFIG_*` options                                  | `docs/reference/config-options.md`                                        |
+| Touch `build.yaml`, `west.yml`, or explain artifacts/flashing  | `docs/reference/build-and-flash.md`                                       |
+| Diagnose a build failure or "wrong keys / wrong layer" symptom | `docs/reference/troubleshooting.md`                                       |
+| Look up a keycode or upstream behaviour                        | `docs/reference/references.md` (then zmk.dev), `docs/reference/layers.md` |
+| Touch the matrix, pins, encoder, display hardware              | `docs/reference/hardware.md`                                              |
+| Unsure which doc applies                                       | `docs/reference/index.md` (has the full map)                              |
 
-### Known divergences: reference-docs vs this repo
+### Known divergences: docs/reference vs this repo
 
 Verify against the `config/` files; the docs describe the **default firmware**.
 
-| Topic            | reference-docs say                                                             | This repo actually does                                                                                                                                                                                                          |
+| Topic            | Reference docs say                                                             | This repo actually does                                                                                                                                                                                                          |
 | ---------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Layers           | 4 layers: `default_layer`, `lower_layer`, `raise_layer`, `layer_3` (`FW`/`FN`) | **3 layers**: `default_layer`, `utility_layer`, `number_layer`. No `layer_3`.                                                                                                                                                    |
 | Display names    | `QWERTY` / `NUMBER` / `SYMBOL` / `FN`                                          | `Base` / `Utility` / `Number`                                                                                                                                                                                                    |
@@ -65,8 +65,9 @@ Verify against the `config/` files; the docs describe the **default firmware**.
 | Soft off         | `&soft_off` on a key, plus `EP_*` keys                                         | Combo `Q+S+Z` + `CONFIG_ZMK_PM_SOFT_OFF=y`; no `EP_*` keys.                                                                                                                                                                      |
 | Sofle notes      | Interspersed for comparison                                                    | Not applicable — ignore Sofle sections.                                                                                                                                                                                          |
 
-`reference-docs/index.md` and `build-and-flash.md` also link to `../docs/…` — that
-folder is **not in this repo**. If a link is dead, fall back to zmk.dev.
+`docs/reference/index.md` and `build-and-flash.md` also link to `../docs/…` —
+those paths are upstream-relative, not part of this repo's `docs/` folder. If a
+link is dead, fall back to zmk.dev.
 
 ## Rules for editing this repo
 
@@ -86,7 +87,7 @@ folder is **not in this repo**. If a link is dead, fall back to zmk.dev.
 6. **`&mo` vs `&thumb_lt`**: this repo defines local hold-tap behaviours
    (`home_mods`, `thumb_lt`, `thumb_lt_own`) with `balanced` +
    `hold-trigger-on-release` + `hold-trigger-key-positions` — see
-   `user-preference-docs/typing-profile.md` when that folder exists. Prefer
+   `docs/user-preference/typing-profile.md` when that folder exists. Prefer
    reusing them over bare `&lt` / `&mt`, and note that `home_mods` maps to `&kp`
    on hold, so use `&hm <MOD> <KEY>` (e.g. `&hm LSHFT A`).
 7. **`CONFIG_*` changes go in `config/eyelash_corne.conf`**, not into shield DTS.
@@ -94,7 +95,7 @@ folder is **not in this repo**. If a link is dead, fall back to zmk.dev.
 8. **Don't rename** `eyelash_corne.keymap` / `eyelash_corne.conf`; the name must
    match the shield. Don't switch `build.yaml` to `corne_*` shields.
 9. **Never re-add `&ext_power EP_*`**. Newer firmware ties LED power to underglow;
-   use `RGB_OFF` / `RGB_ON`. See `reference-docs/custom-behaviours.md`.
+   use `RGB_OFF` / `RGB_ON`. See `docs/reference/custom-behaviours.md`.
 10. **Mirror meaningful layout changes into `README.md` diagrams** and keep the
     header comment block of the keymap in sync with the bindings.
 11. **Don't bump `west.yml` revisions** unless the user asks — the ZMK fork is a
@@ -126,7 +127,7 @@ falls back to `<shield>-<board>-zmk` and produces e.g. `…nice_view-nice_nano_v
 
 Keymap-only changes need **only the left half** re-flashed (zephyr settings do not
 carry the keymap; the keymap is compiled into each image, so flash both if both
-changed — see `reference-docs/build-and-flash.md`).
+changed — see `docs/reference/build-and-flash.md`).
 
 ## Before you finish
 
@@ -134,7 +135,7 @@ changed — see `reference-docs/build-and-flash.md`).
 - Check that any `&behaviour` you added is defined above `keymap { }` and its
   `#binding-cells` match.
 - If you changed a layer's intent, update `README.md` and the keymap header comment.
-- When `user-preference-docs/` exists, also satisfy the checks in its `README.md`
+- When `docs/user-preference/` exists, also satisfy the checks in its `README.md`
   and `typing-profile.md`.
 - Don't attempt `west build` locally unless the user asks — the toolchain and
   module revisions are pinned by CI.
