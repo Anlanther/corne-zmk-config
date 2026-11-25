@@ -4,14 +4,14 @@
  * 48-key, 5-row matrix - NOT the 42-key foostan corne. Bindings follow the
  * shield's matrix transform, in this order:
  *
- * row0: TAB      Q    W     E     R     T          UP                   Y       U    I      O     P     BSLH
+ * row0: TAB      Q    W     E     R     T          UP                   Y       U    I      O     P     CAPS
  * row1: GRAVE    A    S     D     F     G  LEFT ENTER RIGHT    H        J    K      L     SEMI  SQT
  * row2: LSHFT    Z    X     C     V     B  ---- STICK ----   N       M    COMMA  DOT   FSLH  LSHFT
- * thr:                 LT(2,ESC) LT(1,RET) MT(LGUI,DEL)      BSPC  LT(1,SPACE) LT(2,Opt+Esc)
+ * thr:                 LT(2,ESC) LT(1,RET) MT(LGUI,DEL)      BSPC  LT(1,SPACE) LT(2,BSLH)
  *
  * Thumb keys (left to right, matching the original corne.keymap):
  *   Left : ESC/NUMBER  RET/UTILITY  DEL/CMD
- *   Right: BKSP         SPC/UTILITY  Opt+Esc (tap) / NUMBER (hold)
+ *   Right: BKSP         SPC/UTILITY  BSLH (tap) / NUMBER (hold)
  * The inner keys are MT/MO-free so the six thumb keys above stay where your
  * original map had them.
  *
@@ -20,7 +20,7 @@
  *   - Thumb stick: five ordinary matrix keys in a cross (matrix column 12), not a
  *     pointing device. Keymap positions: up 6, left 19, click 20, right 21 and
  *     down 35 (the transform's RC(1,12), previously left unbound). Base binds:
- *     UP Mission Control, LEFT Launchpad, RIGHT Caps Lock toggle, CLICK
+ *     UP Mission Control, LEFT Launchpad, RIGHT Opt+Esc, CLICK
  *     Spotlight, DOWN Show Desktop.
  *
  * Layer numbering: 0 = Base, 1 = Utility, 2 = Number.
@@ -105,7 +105,7 @@
             hold-trigger-on-release;
         };
 
-        /* Right thumbs (SPC and Opt+Esc): hold only triggers from left-hand/thumb keys. */
+        /* Right thumbs (SPC and BSLH): hold only triggers from left-hand/thumb keys. */
         thumb_lt_own: thumb_lt_own {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -155,10 +155,10 @@
         default_layer {
             display-name = "Base";
             bindings = <
-&kp TAB    &kp Q  &kp W  &kp E     &kp R  &kp T                              &kp MISSION_CONTROL  &kp Y        &kp U  &kp I      &kp O    &kp P     &kp BSLH
-&kp GRAVE  &hm LSHFT A  &hm LCTRL S  &hm LALT D  &hm LGUI F  &kp G   &kp LAUNCHPAD  &kp LG(SPACE)  &kp CAPS  &kp H        &hm RGUI J  &hm RALT K  &hm RCTRL L  &hm RSHFT SEMI  &kp SQT
+&kp TAB    &kp Q  &kp W  &kp E     &kp R  &kp T                              &kp MISSION_CONTROL  &kp Y        &kp U  &kp I      &kp O    &kp P     &kp CAPS
+&kp GRAVE  &hm LSHFT A  &hm LCTRL S  &hm LALT D  &hm LGUI F  &kp G   &kp LAUNCHPAD  &kp LG(SPACE)  &kp LA(ESC)  &kp H        &hm RGUI J  &hm RALT K  &hm RCTRL L  &hm RSHFT SEMI  &kp SQT
 &kp LSHFT  &kp Z  &kp X  &kp C     &kp V  &kp B        &trans                 &kp F11                &kp N        &kp M  &kp COMMA  &kp DOT  &kp FSLH  &kp LSHFT
-                         &thumb_lt 2 ESC  &thumb_lt 1 RET  &hm LGUI DEL                                              &kp BSPC  &thumb_lt_own 1 SPACE  &thumb_lt 2 LA(ESC)
+                         &thumb_lt 2 ESC  &thumb_lt 1 RET  &hm LGUI DEL                                              &kp BSPC  &thumb_lt_own 1 SPACE  &thumb_lt 2 BSLH
             >;
 
             sensor-bindings = <&rsr_vol &rsr_trans>;

@@ -12,8 +12,8 @@ files win. Never edit `docs/reference/` to match the keymap.
 
 ## 1. Route the task — read at most 1–2 docs
 
-| Task                                                                                          | Read                                       |
-| --------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| Task                                                                                          | Read                                  |
+| --------------------------------------------------------------------------------------------- | ------------------------------------- |
 | Layers, key positions, keycodes, layer indexes, editing cheat-sheet                           | `docs/reference/layers.md`            |
 | Hold-taps (`&lt`, `&mt`, tap-dance), mod-morph, combos, encoder, RGB power, adding behaviours | `docs/reference/custom-behaviours.md` |
 | `CONFIG_*` options (display, sleep, RGB, BLE, Studio, pointing)                               | `docs/reference/config-options.md`    |
@@ -31,19 +31,19 @@ need `hardware.md`, `config-options.md` or `build-and-flash.md` for a key swap.
 
 These are the known mismatches between the docs (default firmware) and this repo:
 
-| Topic             | Docs say                                                     | This repo actually does                                                                                                                                                                      |
-| ----------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Layers            | 4: `default_layer`, `lower_layer`, `raise_layer`, `layer_3`  | 3: `default_layer` (Base), `utility_layer` (Utility), `number_layer` (Number)                                                                                                                |
-| `&td0` tap-dance  | top-left Shift/Caps tap-dance                                | not used; `&hm` home-mods + `&thumb_lt` layer-taps, and `&thumb_lt 2 LA(ESC)` (tap `Opt+Esc`, hold Number) on the rightmost right thumb                                                      |
-| Thumb keys        | `&mo 1`, `&mo 2`, `&lt 3 …`, `&kp LGUI`, `&kp RALT`          | `&thumb_lt 2 ESC`, `&thumb_lt 1 RET`, `&hm LGUI DEL`, `&kp BSPC`, `&thumb_lt_own 1 SPACE`, `&thumb_lt 2 LA(ESC)`                                                                             |
-| Thumb stick       | joystick sensor with `&mmv` / `&mkp`                         | 5 plain matrix keys in a cross (up `6`, left `19`, click `20`, right `21`, down `35`) — Mission Control, Show Desktop, Launchpad, Caps toggle, Spotlight on Base only; transparent elsewhere |
-| Encoder           | `&inc_dec_kp C_VOL_UP C_VOL_DN`, per-layer scroll            | `&rsr_vol` on every layer (`sensor-bindings = <&rsr_vol &rsr_trans>`)                                                                                                                        |
-| Soft off          | `&soft_off` key / `&ext_power EP_*`                          | combo Q+S+Z (`key-positions = <1 15 29>`) + `CONFIG_ZMK_PM_SOFT_OFF=y`                                                                                                                       |
-| Mouse layer       | `&mmv`/`&mkp` on upper layers                                | `CONFIG_ZMK_POINTING=y` set, but no pointing bindings                                                                                                                                        |
-| File names        | `corne.keymap`, `corne.conf`, `corne.dtsi`, `corne_left.dts` | `eyelash_corne.keymap` / `.conf`; shield DTS lives in the module                                                                                                                             |
-| Number layer      | `NUMBER` layer holds F-keys/BT/RGB                           | Utility holds `F2 F3 C_PREV C_PP C_NEXT`; Number holds only `N0`–`N9`                                                                                                                        |
-| Sofle sections    | mixed in for comparison                                      | ignore entirely                                                                                                                                                                              |
-| `../docs/…` links | point to shipped manuals                                     | upstream-relative and dead here — fall back to zmk.dev                                                                                                                                       |
+| Topic             | Docs say                                                     | This repo actually does                                                                                                                                                                  |
+| ----------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Layers            | 4: `default_layer`, `lower_layer`, `raise_layer`, `layer_3`  | 3: `default_layer` (Base), `utility_layer` (Utility), `number_layer` (Number)                                                                                                            |
+| `&td0` tap-dance  | top-left Shift/Caps tap-dance                                | not used; `&hm` home-mods + `&thumb_lt` layer-taps, and `&thumb_lt 2 BSLH` (tap `\`, hold Number) on the rightmost right thumb                                                           |
+| Thumb keys        | `&mo 1`, `&mo 2`, `&lt 3 …`, `&kp LGUI`, `&kp RALT`          | `&thumb_lt 2 ESC`, `&thumb_lt 1 RET`, `&hm LGUI DEL`, `&kp BSPC`, `&thumb_lt_own 1 SPACE`, `&thumb_lt 2 BSLH`                                                                            |
+| Thumb stick       | joystick sensor with `&mmv` / `&mkp`                         | 5 plain matrix keys in a cross (up `6`, left `19`, click `20`, right `21`, down `35`) — Mission Control, Show Desktop, Launchpad, Opt+Esc, Spotlight on Base only; transparent elsewhere |
+| Encoder           | `&inc_dec_kp C_VOL_UP C_VOL_DN`, per-layer scroll            | `&rsr_vol` on every layer (`sensor-bindings = <&rsr_vol &rsr_trans>`)                                                                                                                    |
+| Soft off          | `&soft_off` key / `&ext_power EP_*`                          | combo Q+S+Z (`key-positions = <1 15 29>`) + `CONFIG_ZMK_PM_SOFT_OFF=y`                                                                                                                   |
+| Mouse layer       | `&mmv`/`&mkp` on upper layers                                | `CONFIG_ZMK_POINTING=y` set, but no pointing bindings                                                                                                                                    |
+| File names        | `corne.keymap`, `corne.conf`, `corne.dtsi`, `corne_left.dts` | `eyelash_corne.keymap` / `.conf`; shield DTS lives in the module                                                                                                                         |
+| Number layer      | `NUMBER` layer holds F-keys/BT/RGB                           | Utility holds `F2 F3 C_PREV C_PP C_NEXT`; Number holds only `N0`–`N9`                                                                                                                    |
+| Sofle sections    | mixed in for comparison                                      | ignore entirely                                                                                                                                                                          |
+| `../docs/…` links | point to shipped manuals                                     | upstream-relative and dead here — fall back to zmk.dev                                                                                                                                   |
 
 ## 3. Map a doc's syntax onto this repo's behaviours
 
